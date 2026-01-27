@@ -34,7 +34,6 @@ def login(email:str , password:str , i):
         sb.save_screenshot(f"log{i}.png")
 
 
-
 for i in range(len(data)):
     login(data[i]["email"],data[i]["password"],i)
 print("sucessfull pergant")
