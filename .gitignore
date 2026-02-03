@@ -1,4 +1,7 @@
 downloaded_files/
 .venv/
 .gitignore
-
+__init__.py
+Accounts.py
+logs/
+__pycache__
