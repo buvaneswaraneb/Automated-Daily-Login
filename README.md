@@ -4,4 +4,5 @@ Automated login script for the website PixAi
 
 Modules Needed
 
-``pip3 install seleniumbase```
+```pip3 install seleniumbase```
+
