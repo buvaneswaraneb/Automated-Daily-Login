@@ -80,5 +80,5 @@ def main():
     print("sucessfully Completed")
 
 
-
-main()
+if __name__ == "__main__":
+    main()
