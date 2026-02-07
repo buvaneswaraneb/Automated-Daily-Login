@@ -59,6 +59,12 @@ def show():
     connect.close()
 
 
+def getinput ():
+     email = str(input("Enter Your EmailID: "))
+     password = str(input("Enter Your PassWord: "))
+                    
+     return (email,password)
+
 
 if __name__ == "__main__":
         createDataBase()

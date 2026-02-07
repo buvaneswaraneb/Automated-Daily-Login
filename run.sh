@@ -1,4 +1,6 @@
 #!/bin/bash
 
 
-./.venv/bin/python src/Pix.py
+./.venv/bin/python src/main/Pix.py
+
+
