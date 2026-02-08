@@ -5,3 +5,6 @@ __init__.py
 Accounts.py
 logs/
 __pycache__
+Accounts.db
+DataBase/Accounts.db
+.vscode/
