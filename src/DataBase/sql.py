@@ -1,5 +1,5 @@
 import sqlite3
-
+import re
 #Global Variables
 db = "Accounts.db"
 
@@ -62,18 +62,38 @@ def show():
 def getinput ():
      email = str(input("Enter Your EmailID: "))
      password = str(input("Enter Your PassWord: "))
-                    
      return (email,password)
+
+def getManyInputs():
+    previous = 0
+    account_array=[]
+    n:int = int(input("Enter the Number of Accounts : "))
+    for i in range(0,n):
+        email = input("Enter the Email: \n")
+        password = input("Enter the Password or use Previous Password (p): \n")
+        print("Email validation: ",validEmail(email))
+        if(password=="p"):
+             password = previous
+        else:
+             previous = password     
+        account_array.append((email,password))
+    return account_array
+
+def validEmail(email):
+     regex = "^[^@]+@[^@]+\.[^@]+$"
+     pattern = re.compile(regex)
+     return bool(pattern.match(email))
+
+
 
 
 if __name__ == "__main__":
         createDataBase()
-        li = [
-             ('test@mail.com','password'),
-             ('test1@mail.com','password')
-        ]
-        AddValueMany(li)
-        show()
+        val = getManyInputs()
+        AddValueMany(val)
+
+
+
         
 
 
