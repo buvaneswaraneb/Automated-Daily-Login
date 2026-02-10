@@ -13,7 +13,7 @@ reward_selector = "span:contains('Claim 10,000 daily credits')"
 def login(email:str , password:str , i):
     with SB(
     uc=True,        
-    headless=False,
+    headless=True,
     incognito=False,
     locale="en-US"
     ) as sb:
@@ -43,32 +43,32 @@ def login(email:str , password:str , i):
                 sb.sleep(2.3)   
             if sb.is_element_visible(reward_selector):
                 clickRewards(sb) 
-                print(f"✅ Reward available on Email: {email}")
                 if sb.is_element_visible(reward_selector):
                     try:
-                        sb.sleep(4)
                         clickRewards()
+                        sb.sleep(2)
+                        clickRewards()
+                        sb.sleep(2)
                         if sb.is_element_visible(reward_selector):
                             sb.sleep(2)
                             clickRewards()
                             sb.sleep(2)
                     except:
                         pass
-
+            
                 # Collects the Reward
                 closeRewards(sb)
+                print(f"✅ Reward available on Email: {email}")
                 logout(sb)
             else:
                 print(f"❌ Reward already claimed today on Email: {email}")
                 logout(sb) #logs out
-            
         except:
             print(f"Error Founded on Email: {email}")
             sb.save_screenshot(str(img_dir / f"Error{i}.png"))
 
 
 def clickRewards(sb:SB):
-        sb.sleep(1)
         sb.wait_for_element_clickable(reward_selector, timeout=30)
         sb.click(reward_selector)
 
@@ -87,7 +87,6 @@ def logout(sb:SB):
                     logout(sb)
 
 def reAttemptReward(sb:SB):
-    sb.sleep(2)
     clickRewards(sb)
     if (sb.is_element_visible(reward_selector)):
         sb.sleep(4)
