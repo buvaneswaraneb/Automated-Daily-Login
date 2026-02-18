@@ -6,5 +6,8 @@ Accounts.py
 logs/
 __pycache__
 Accounts.db
-DataBase/Accounts.db
+DataBase/
 .vscode/
+/Users/bharath/Documents/GitHub/AutoMation-PY-GITHUB/TODO
+.DS_Store
+test/guiver1.py

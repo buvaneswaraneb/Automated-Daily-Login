@@ -1,19 +1,21 @@
 from seleniumbase import SB
 from Accounts import getEmailPair,getLength
 from pathlib import Path
+import datetime
 import time
+from sql import Date
 
 img_dir = Path("logs/images")
 img_dir.mkdir(parents=True, exist_ok=True)
 close_button = "span:contains('Close')"
 toast_close_btn = "button[aria-label='close']"
 reward_selector = "span:contains('Claim 10,000 daily credits')"
-
+headless = False
 
 def login(email:str , password:str , i):
     with SB(
     uc=True,        
-    headless=False,
+    headless=headless,
     incognito=False,
     locale="en-US"
     ) as sb:
@@ -29,23 +31,28 @@ def login(email:str , password:str , i):
             )
             sb.sleep(1)
             sb.click("span:contains('Login')")
-            sb.sleep(4)   
+            sb.sleep(3)
+            if sb.is_element_visible("span:contains('Login')"):
+                try:
+                    sb.click("span:contains('Login')")
+                    sb.sleep(3)
+                except:
+                     print("ReClick failed of span:'Login'")
+
+            if sb.is_element_present("id:contains('cf-turnstile')"):
+                 print("CAPTUCHA")
+                 sb.sleep(3)
+                 clickRewards(sb)
+
             if sb.is_element_visible(reward_selector):
+                sb.sleep(1)
                 clickRewards(sb) 
-                sb.sleep(3)
-                if sb.is_element_visible(reward_selector):
-                    try:
-                        clickRewards()
-                        sb.sleep(2)
-                        if sb.is_element_visible(reward_selector):
-                            clickRewards()
-                            sb.sleep(2)
-                    except:
-                        pass
-            
+                sb.sleep(2)
                 # Collects the Reward
                 closeRewards(sb)
                 print(f"✅ Reward available on Email: {email}")
+                date = Date()
+                date.AddValue(email)
                 logout(sb)
             else:
                 print(f"❌ Reward already claimed today on Email: {email}")
@@ -82,13 +89,16 @@ def reAttemptReward(sb:SB):
 
 def main():
     start = time.time()
+    date = Date()
+    visted = date.getclaimed()
+    print("Visted Today: ",visted)
     for i in range(0,getLength()):
         data = getEmailPair(i)
-        login(data["email"],data["password"],i)
+        if (data["email"] not in visted): 
+            login(data["email"],data["password"],i)
     end = time.time()
     print(f"Time taken: {end - start:.4f} seconds")
     print("sucessfully Completed")
-    return True
 
 
 
