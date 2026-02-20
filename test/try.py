@@ -8,6 +8,9 @@ app.geometry("600x400")
 app.resizable(height=True,width=True)
 on = False
 scene = 0
+default_font = None
+theme_color = "#E9BDFB"
+
 
 def changestate():
     global on
@@ -32,11 +35,11 @@ bg_frame_W = customtkinter.CTkFrame(master=app,fg_color="white",corner_radius=0)
 bg_frame_W.pack(side='right',fill='both',expand=True)
 
 #blank
-blank_frame = customtkinter.CTkFrame(master=app,fg_color="white",corner_radius=0)
-blank_frame.pack(side='right',fill='both',expand=True)
-blank_frame.forget()
+account_frame = customtkinter.CTkFrame(master=app,fg_color="white",corner_radius=0)
+account_frame.pack(side='right',fill='both',expand=True)
+account_frame.forget()
 
-scenes = [bg_frame_W,blank_frame]
+scenes = [bg_frame_W,account_frame]
 
 changebg = False
 def accountScreen():
@@ -76,5 +79,18 @@ accountsbtn.pack(side='top')
 addAccount = customtkinter.CTkButton(text="Add Account",text_color="black",master=side_menu,fg_color='white',hover_color="#ECDDF1")
 addAccount.pack(side='top',pady=10)
 
+#Account frame :
+
+account_frame.columnconfigure(index=(0,1,2,3,4),weight=1)
+account_frame.rowconfigure(index=(0,2,3,4,5,6),weight=2)
+account_frame.rowconfigure(index=1,weight=2)
+header_text = customtkinter.CTkLabel(text="Accounts",text_color="black",master=account_frame)
+header_text.grid(column=2,row=0,sticky='ewn', pady=20)
+
+email_frame = customtkinter.CTkFrame(master=account_frame)
+email_frame.grid(column=0,row=1,rowspan=7,columnspan=5,sticky='nsew')
+
+# email_label = customtkinter.CTkLabel(master=email_frame,text=email_present[0],corner_radius=10,fg_color=theme_color,text_color="black")
+# email_label.pack(side='top',fill='x',pady=10,padx=10)
 
 app.mainloop()
