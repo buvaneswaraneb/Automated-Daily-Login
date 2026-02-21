@@ -1,10 +1,16 @@
 import sqlite3
 from datetime import date
+import os 
 #Global Variables
+
+
+BASE_DIR = os.path.dirname(__file__)
+account_path = os.path.join(BASE_DIR,"DataBase","Accounts.db")
+date_path = os.path.join(BASE_DIR,"DataBase","date.db")
 
 class AccountDateBase:
     def __init__(self):
-        self.db = "../DataBase/Accounts.db"
+        self.db = account_path
         self.table = "Accounts"
 
     #to Execute Single Value with single value
@@ -71,6 +77,18 @@ class AccountDateBase:
             print(f"{value}\n")
         connect.close()
 
+    def getAccount(self):
+        li = []
+        connect = sqlite3.connect(self.db)
+        cur = connect.cursor()
+        cur.execute(f"select rowid,* from {self.table}")
+        connect.commit()
+        values = cur.fetchall()
+        for value in values:
+            li.append(value)
+        connect.close()
+        return li
+
 
     def getManyInputs(self):
         previous = 0
@@ -95,10 +113,10 @@ class AccountDateBase:
 
 
 
-class Date(AccountDateBase):
+class DateDataBase(AccountDateBase):
     def __init__(self):
         super().__init__()
-        self.db = "src/DataBase/date.db"
+        self.db = date_path
         self.table = "Claim"
 
     def createTable(self):
@@ -137,15 +155,14 @@ class Date(AccountDateBase):
         li = []
         for i in val:
             li.append(i[0])
-        return li
         conn.close()
-    
-
+        return li
 
 if __name__ == "__main__":
-    date = Date()
-    print(date.getclaimed())    
-        
+    print(BASE_DIR) 
+    a = AccountDateBase()
+    a.show()
+    b = Date()
 
 
 

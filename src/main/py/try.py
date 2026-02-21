@@ -1,6 +1,7 @@
 import customtkinter
 from PIL import Image
 import tkinter
+from db import DateDataBase,AccountDateBase
 
 app = customtkinter.CTk()
 app.title("Trying Out")
@@ -80,15 +81,17 @@ addAccount = customtkinter.CTkButton(text="Add Account",text_color="black",maste
 addAccount.pack(side='top',pady=10)
 
 #Account frame :
-
-account_frame.columnconfigure(index=(0,1,2,3,4),weight=1)
-account_frame.rowconfigure(index=(0,2,3,4,5,6),weight=2)
-account_frame.rowconfigure(index=1,weight=2)
-header_text = customtkinter.CTkLabel(text="Accounts",text_color="black",master=account_frame)
-header_text.grid(column=2,row=0,sticky='ewn', pady=20)
-
 email_frame = customtkinter.CTkFrame(master=account_frame)
-email_frame.grid(column=0,row=1,rowspan=7,columnspan=5,sticky='nsew')
+email_frame.grid(column=1,row=1,rowspan=7,columnspan=5,sticky='nsew')
+
+a = AccountDateBase()
+a.show()
+li = a.getAccount()
+
+for i in li:
+     label = customtkinter.CTkLabel(text=i,master=email_frame)
+     label.pack(side='top',fill = 'x',expand=True)
+     
 
 # email_label = customtkinter.CTkLabel(master=email_frame,text=email_present[0],corner_radius=10,fg_color=theme_color,text_color="black")
 # email_label.pack(side='top',fill='x',pady=10,padx=10)

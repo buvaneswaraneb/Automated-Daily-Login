@@ -2,7 +2,7 @@ from seleniumbase import SB
 from Accounts import getEmailPair,getLength
 from pathlib import Path
 import time
-from db import Date
+from db import DateDataBase
 
 img_dir = Path("logs/images")
 img_dir.mkdir(parents=True, exist_ok=True)
@@ -30,18 +30,20 @@ def login(email:str , password:str , i):
             )
             sb.sleep(1)
             sb.click("span:contains('Login')")
-            sb.sleep(3)
+            sb.sleep(2)
             if sb.is_element_visible("span:contains('Login')"):
                 try:
                     sb.click("span:contains('Login')")
-                    sb.sleep(3)
+                    sb.sleep(2)
                 except:
                      print("ReClick failed of span:'Login'")
 
-            if sb.is_element_present("id:contains('cf-turnstile')"):
-                 print("CAPTUCHA")
-                 sb.sleep(3)
-                 clickRewards(sb)
+            if sb.is_element_present('input[name="cf-turnstile-response"]'):
+
+                print("Turnstile detected!")
+                sb.sleep(2)
+
+                print("Turnstile solved!")
 
             if sb.is_element_visible(reward_selector):
                 sb.sleep(1)
@@ -50,7 +52,7 @@ def login(email:str , password:str , i):
                 # Collects the Reward
                 closeRewards(sb)
                 print(f"✅ Reward available on Email: {email}")
-                date = Date()
+                date = DateDataBase()
                 date.AddValue(email)
                 logout(sb)
             else:
@@ -88,7 +90,7 @@ def reAttemptReward(sb:SB):
 
 def main():
     start = time.time()
-    date = Date()
+    date = DateDataBase()
     visted = date.getclaimed()
     print("Visted Today: ",visted)
     for i in range(0,getLength()):
