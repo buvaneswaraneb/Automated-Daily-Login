@@ -1,12 +1,14 @@
 import customtkinter
 import tkinter
 from PIL import Image
+from py.db import DateDataBase
 import os
-
-
+import py.Pix as pix
 BASE_DIR = os.path.dirname(__file__)
 img_path_on = os.path.join(BASE_DIR,"asserts","images","on.png")
 on_img  = customtkinter.CTkImage(light_image=Image.open(img_path_on),dark_image=Image.open(img_path_on),size=(40,40))
+
+
 
 
 default_color = ("#E9BDFB","#33032F")
@@ -20,8 +22,6 @@ class Window(customtkinter.CTk):
         self.geometry("600x400")
         self.title('Pix Auto')
         self._set_appearance_mode('light')
-
-        content(self).main()
         self.con = content(self)
         self.con.pack(side="top",expand=True,fill="both")
 
@@ -38,21 +38,16 @@ class content(customtkinter.CTkFrame):
         self.home=MainMenu(self)
         self.home.pack(fill='both',side='left',expand=True)
         self.af = Accountframe(self)
-        self.af.pack(side="top",fill="both",expand=True)
-        self.af.forget()
-    
+
     def change(self):
         print("funcalled")
         self.acc = not self.acc
-        accFrameList = [self.home,self.af]
-        # if(self.acc):
-        #     self.accFrameList[0].forget()
-        #     self.accFrameList[1].tkraise()
-        #     self.accFrameList[1].pack()
-        # else:
-        self.home.pack_forget()
-
-
+        if self.acc:
+            self.home.pack_forget()
+            self.af.pack(side="top", fill="both", expand=True)
+        else:
+            self.af.pack_forget()
+            self.home.pack(fill='both', side='left', expand=True)
 
 
 class SideMenu(customtkinter.CTkFrame):
@@ -72,10 +67,10 @@ class SideMenuPlaceHolder(customtkinter.CTkFrame):
     def __init__(self, master, width = 200, height = 200, corner_radius = None, border_width = None, bg_color = "transparent", fg_color = default_color, border_color = None, background_corner_colors = None, overwrite_preferred_drawing_method = None, **kwargs):
         super().__init__(master, width, height, corner_radius, border_width, bg_color, fg_color, border_color, background_corner_colors, overwrite_preferred_drawing_method, **kwargs)
         self.menu()
-
     def accbtn(self):
-        self.master.master.change()
+        self.master.master.change() 
 
+         # SideMenuPlaceHolder → SideMenu → content
     def menu(self):
         button = customtkinter.CTkButton(master=self,text="Accounts",text_color=textColor,fg_color=bg_color,hover_color=default_color_hover,command=self.accbtn)
         button.pack(side='top')
@@ -95,6 +90,7 @@ class MainMenu(customtkinter.CTkFrame):
         if (self.run_state):
             self.mess.configure(text="Running",text_color="green")
             self.mess.pack()
+            pix.main()
 
         else:
             self.mess.configure(text="Not Running",text_color="red")
@@ -114,10 +110,25 @@ class MainMenu(customtkinter.CTkFrame):
         self.mess.pack(side = "top",pady=10)
 
 class Accountframe(customtkinter.CTkFrame):
-    def __init__(self, master, width = 200, height = 200, corner_radius = None, border_width = None, bg_color = "transparent", fg_color = "black", border_color = None, background_corner_colors = None, overwrite_preferred_drawing_method = None, **kwargs):
+    def __init__(self, master, width = 200, height = 200, corner_radius = 0, border_width = None, bg_color = "transparent", fg_color = bg_color, border_color = None, background_corner_colors = None, overwrite_preferred_drawing_method = None, **kwargs):
         super().__init__(master, width, height, corner_radius, border_width, bg_color, fg_color, border_color, background_corner_colors, overwrite_preferred_drawing_method, **kwargs)
+        self.text = customtkinter.CTkLabel(text="Accounts", text_color=textColor,master=self)
+        self.text.pack(side='top' , pady=10)
+        self.placeholder = accountPlaceHolder(self)
+        self.placeholder.pack(side='top',expand=True,pady=10,fill='both')
 
-
+class accountPlaceHolder(customtkinter.CTkScrollableFrame):
+    def __init__(self, master, width = 200, height = 200, corner_radius = None, border_width = None, bg_color = "transparent", fg_color = bg_color, border_color = None, background_corner_colors = None, overwrite_preferred_drawing_method = None, **kwargs):
+        super().__init__(master, width, height, corner_radius, border_width, bg_color, fg_color, border_color, background_corner_colors, overwrite_preferred_drawing_method, **kwargs)
+        d = DateDataBase()
+        li = d.getclaimed()
+        for mail in li:
+            accountHolder = customtkinter.CTkFrame(master=self,fg_color=default_color,height=40)
+            self.mailLablel = customtkinter.CTkLabel(master=accountHolder,text=mail,text_color=textColor,corner_radius=5,fg_color=default_color,height=40, justify="left",anchor='w')
+            claimed = customtkinter.CTkLabel(master=accountHolder,text="Claimed",text_color="green")
+            self.mailLablel.pack(pady = 10 , padx =10, side = 'top')
+            accountHolder.pack(pady = 10 , padx =10, side = 'top',fill='x',expand=True)
+            claimed.pack(side='right')
 
 if __name__ == "__main__":
     w = Window()

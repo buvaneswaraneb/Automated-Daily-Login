@@ -1,8 +1,8 @@
 from seleniumbase import SB
-from Accounts import getEmailPair,getLength
+from py.Accounts import getEmailPair,getLength
 from pathlib import Path
 import time
-from db import DateDataBase
+from py.db import DateDataBase
 
 img_dir = Path("logs/images")
 img_dir.mkdir(parents=True, exist_ok=True)

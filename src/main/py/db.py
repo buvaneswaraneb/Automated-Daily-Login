@@ -161,8 +161,10 @@ class DateDataBase(AccountDateBase):
 if __name__ == "__main__":
     print(BASE_DIR) 
     a = AccountDateBase()
-    a.show()
-    b = Date()
+    d = DateDataBase()
+    d.show()
+
+
 
 
 
