@@ -4,12 +4,12 @@ from PIL import Image
 from py.db import DateDataBase
 import os
 import py.Pix as pix
+from py.Accounts import getEmailPair,getLength
+import multiprocessing
+
 BASE_DIR = os.path.dirname(__file__)
 img_path_on = os.path.join(BASE_DIR,"asserts","images","on.png")
 on_img  = customtkinter.CTkImage(light_image=Image.open(img_path_on),dark_image=Image.open(img_path_on),size=(40,40))
-
-
-
 
 default_color = ("#E9BDFB","#33032F")
 default_color_hover = ("#846C8E","#462C34")
@@ -31,6 +31,7 @@ class content(customtkinter.CTkFrame):
         super().__init__(master, width, height, corner_radius, border_width, bg_color, fg_color, border_color, background_corner_colors, overwrite_preferred_drawing_method, **kwargs)
         self.main()
         self.acc = False
+
          
     def main(self):
         self.side=SideMenu(self)
@@ -84,26 +85,55 @@ class MainMenu(customtkinter.CTkFrame):
         self.alert_mess()
         self.switchButton()
         self.run_state = False
+        self.process = None
+    
+    def check_process(self):
+
+        if self.process is not None:
+            if self.process.is_alive():
+                self.after(200, self.check_process)
+            else:
+                print("Exit code:", self.process.exitcode)
+
+                self.mess.configure(text="Process Finished", text_color="lime")
+                self.buttonStart.configure(state="normal")
+
+                self.process = None
+                self.run_state = False
 
     def run(self):
         self.run_state = not self.run_state
         if (self.run_state):
             self.mess.configure(text="Running",text_color="green")
             self.mess.pack()
-            pix.main()
+            self.process = multiprocessing.Process(target=pix.main)
+            self.process.start()
+            self.buttonStart.configure(state="disabled")
+            self.after(self.after(200, self.check_process))
 
         else:
             self.mess.configure(text="Not Running",text_color="red")
             self.mess.pack()
+            if self.process is not None:
+                    self.process.terminate()
+                    self.process.join()
+                    self.process = None
         
     def start_button(self):
-        buttonStart = customtkinter.CTkButton(image=on_img,master=self,fg_color=default_color,height=200,width=200,corner_radius=200,hover_color=default_color_hover,text="",command=self.run)
-        buttonStart.pack(side='top',pady=30)
+        self.buttonStart = customtkinter.CTkButton(image=on_img,master=self,fg_color=default_color,height=200,width=200,corner_radius=200,hover_color=default_color_hover,text="",command=self.run,state="normal")
+        self.buttonStart.pack(side='top',pady=30)
 
     def switchButton(self):
         self.var = customtkinter.StringVar(value="deafult")
-        switch = customtkinter.CTkSwitch(master=self,onvalue="dark",offvalue='light',text="")
+        switch = customtkinter.CTkSwitch(master=self,onvalue="dark",offvalue='light',text="",command=self.headless)
         switch.pack(side='right')
+    
+    def headless(self):
+        if (self.var.get() == "dark"):
+            pix.headless = False
+        elif (self.var.get() == "light"):
+            pix.headless = True
+        
     
     def alert_mess(self):
         self.mess = customtkinter.CTkLabel(text="Not Running", master=self,text_color="red")

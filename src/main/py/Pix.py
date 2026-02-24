@@ -4,6 +4,7 @@ from pathlib import Path
 import time
 from py.db import DateDataBase
 
+
 img_dir = Path("logs/images")
 img_dir.mkdir(parents=True, exist_ok=True)
 close_button = "span:contains('Close')"
@@ -37,7 +38,7 @@ def login(email:str , password:str , i):
                     sb.sleep(2)
                 except:
                      print("ReClick failed of span:'Login'")
-
+            sb.sleep(4)
             if sb.is_element_present('input[name="cf-turnstile-response"]'):
 
                 print("Turnstile detected!")

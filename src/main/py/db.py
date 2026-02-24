@@ -157,11 +157,25 @@ class DateDataBase(AccountDateBase):
             li.append(i[0])
         conn.close()
         return li
+    
+    def delete(self):
+        query = """
+        DELETE FROM Claim WHERE email = ''"""
+        self.Execute(query=query)
+    
+    def clean(self):
+        query="""
+            DELETE FROM Claim WHERE day <> date('now') 
+            """
+        self.Execute(query=query)
+
 
 if __name__ == "__main__":
     print(BASE_DIR) 
     a = AccountDateBase()
     d = DateDataBase()
+    d.clean()
+    d.delete()
     d.show()
 
 
