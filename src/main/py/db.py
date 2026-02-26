@@ -145,7 +145,7 @@ class DateDataBase(AccountDateBase):
         conn.commit()
         conn.close()
     
-    def getclaimed(self):
+    def getclaimedToday(self):
         conn = sqlite3.connect(self.db)
         curr = conn.cursor()
         query = """SELECT email FROM Claim WHERE day = date('now')"""
@@ -168,15 +168,22 @@ class DateDataBase(AccountDateBase):
             DELETE FROM Claim WHERE day <> date('now') 
             """
         self.Execute(query=query)
-
+    
+    def getClaimedHistory(self):
+        conn = sqlite3.connect(self.db)
+        curr = conn.cursor()
+        query = """SELECT email,day FROM Claim"""
+        curr.execute(query)
+        conn.commit()
+        li = curr.fetchall()
+        return li
+    
 
 if __name__ == "__main__":
     print(BASE_DIR) 
     a = AccountDateBase()
     d = DateDataBase()
-    d.clean()
-    d.delete()
-    d.show()
+    d.getClaimedHistory()
 
 
 

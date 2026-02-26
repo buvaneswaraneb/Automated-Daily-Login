@@ -92,7 +92,7 @@ def reAttemptReward(sb:SB):
 def main():
     start = time.time()
     date = DateDataBase()
-    visted = date.getclaimed()
+    visted = date.getclaimedToday()
     print("Visted Today: ",visted)
     for i in range(0,getLength()):
         data = getEmailPair(i)
