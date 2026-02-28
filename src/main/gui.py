@@ -105,9 +105,8 @@ class MainMenu(customtkinter.CTkFrame):
             else:
                 print("Exit code:", self.process.exitcode)
 
-                self.mess.configure(text="Process Finished", text_color="lime")
+                self.mess.configure(text="Process Finished", text_color="green")
                 self.buttonStart.configure(state="normal")
-
                 self.process = None
                 self.run_state = False
 
@@ -169,27 +168,63 @@ class Historyframe(customtkinter.CTkFrame):
 class ScrollFrame(customtkinter.CTkScrollableFrame):
     def __init__(self, master, data,width = 200, height = 200, corner_radius = None, border_width = None, bg_color = "transparent", fg_color = bg_color, border_color = None, background_corner_colors = None, overwrite_preferred_drawing_method = None, **kwargs):
         super().__init__(master, width, height, corner_radius, border_width, bg_color, fg_color, border_color, background_corner_colors, overwrite_preferred_drawing_method, **kwargs)
-        self.li = data
+        self.li =  data #["test","test","test"]
     
     def emailPlaceHolder(self):
         print(self.li)
         for mail in self.li:
-            accountHolder = customtkinter.CTkFrame(master=self,fg_color=default_color,height=30)
-            emailPlaceHolder = customtkinter.CTkFrame(master=accountHolder,fg_color=default_color,height=30)
-            statusPlaceHolder = customtkinter.CTkFrame(master=accountHolder,fg_color=default_color,height=30,width=30)
-            self.mailLablel = customtkinter.CTkLabel(master=emailPlaceHolder,text=mail,text_color=textColor,corner_radius=5,fg_color=default_color,height=20, justify="left",anchor='w')
-            claimed = customtkinter.CTkLabel(master=accountHolder,text="Claimed",text_color="green")
+
+            accountHolder = customtkinter.CTkFrame(master=self,
+                                                   fg_color=default_color,
+                                                   corner_radius=10)
+            
+            emailPlaceHolder = customtkinter.CTkFrame(master=accountHolder,
+                                                      fg_color=default_color,
+                                                      height=30,
+                                                      corner_radius=10)
+            
+            statusPlaceHolder = customtkinter.CTkFrame(master=accountHolder,
+                                                       fg_color=default_color,
+                                                       height=30,
+                                                       width=30,
+                                                       corner_radius=10)
+            
+            self.mailLablel = customtkinter.CTkLabel(master=emailPlaceHolder,
+                                                     text=mail,
+                                                     text_color=textColor,
+                                                     corner_radius=10,
+                                                     fg_color=default_color,
+                                                     height=30, 
+                                                     justify="left",
+                                                     anchor='w')
+            
+            claimed = customtkinter.CTkLabel(master=statusPlaceHolder,
+                                             text="Claimed",
+                                             text_color="green")
+            
             emailPlaceHolder.pack(side="left",fill="both",expand=True)
             statusPlaceHolder.pack(side="left",fill="both",expand=True)
             self.mailLablel.pack(pady = 10 , padx =10, side = 'top')
-            accountHolder.pack(pady = 10 , padx =10, side = 'top',fill='both',expand=True)
-            # claimed.pack(side='right' , anchor="ne")
+            accountHolder.pack(pady = 10 , padx =10, side = 'top',fill='x',expand=True)
+            claimed.pack(pady = 10 , padx =10, side = 'top')
 
     def noClaimEmailPlaceHolder(self):
+            
             for mail in self.li:
-                accountHolder = customtkinter.CTkFrame(master=self,fg_color=default_color,height=40)
-                self.mailLablel = customtkinter.CTkLabel(master=accountHolder,text=mail,text_color=textColor,corner_radius=5,fg_color=default_color,height=40, justify="left",anchor='w')
-                self.mailLablel.pack(pady = 10 , padx =10, side = 'top')
+                accountHolder = customtkinter.CTkFrame(master=self,
+                                                       fg_color=default_color,
+                                                       height=40)
+                
+                self.mailLablel = customtkinter.CTkLabel(master=accountHolder,
+                                                        text=mail,
+                                                        text_color=textColor,
+                                                        corner_radius=5,
+                                                        fg_color=default_color,
+                                                        height=40,
+                                                        justify="left",
+                                                        anchor='w')
+                
+                self.mailLablel.pack(pady = 10, padx =10, side = 'top')
                 accountHolder.pack(pady = 10 , padx =10, side = 'top',fill='x',expand=True)
 
 
