@@ -63,6 +63,8 @@ def login(email:str , password:str , i):
             print(f"the Error is :{e}")
             print(f"Error Founded on Email: {email}")
             sb.save_screenshot(str(img_dir / f"Error{i}.png"))
+            
+            
 
 
 def clickRewards(sb:SB):

@@ -183,7 +183,7 @@ if __name__ == "__main__":
     print(BASE_DIR) 
     a = AccountDateBase()
     d = DateDataBase()
-    d.getClaimedHistory()
+    print(d.getClaimedHistory())
 
 
 
