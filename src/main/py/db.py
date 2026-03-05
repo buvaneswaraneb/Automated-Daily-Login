@@ -176,14 +176,16 @@ class DateDataBase(AccountDateBase):
         curr.execute(query)
         conn.commit()
         li = curr.fetchall()
-        return li
+        return li.sort()
     
 
 if __name__ == "__main__":
     print(BASE_DIR) 
     a = AccountDateBase()
-    d = DateDataBase()
-    print(d.getClaimedHistory())
+    print(type(a.getAccount()))
+    print(a.getAccount())
+
+    
 
 
 

@@ -66,7 +66,6 @@ class Pix:
 
             if not self.sb.is_element_visible(self.reward_selector_ele):
                 print("Reward Not Found")
-                self.date.AddValue(self.email)
                 print("++++Program exited++++ ")
                 return False# reward not found
             
@@ -90,10 +89,12 @@ class Pix:
 
     def logout(self):
         try:
+            print("Entered for logout")
             self.sb.wait_for_element_present("header button[aria-haspopup='true']")
             self.sb.click("header button[aria-haspopup='true']")
             self.sb.click("//div[@role='menuitem']//div[text()='Log out']", by="xpath")
             self.sb.wait_for_text_visible("Sign in",timeout=10)
+            print("signupspotted")
             print("Sucessfully logged out")
             return True
 
@@ -113,17 +114,15 @@ def main(headles=True):
         visted = date.getclaimedToday()
         for i in range(0,getLength()):
             data = getEmailPair(i)
-            if (data["email"] in visted):
-                continue
+            # if (data["email"] in visted):
+            #     continue
             if (not pix.visitWebpage()):
                 print("failed on visiting")
             if( not pix.login(data["email"],data["password"])):
                 print("failed on logging in")
-                continue
             log = pix.collect_reward()
             if(log == False):
-                print("failed on logged out")
-                continue
+                print("m failed on logged out")
             pix.logout()
     end = time.time()
     print(f"Total Time :: {end-start:.2f} seconds")
@@ -131,4 +130,4 @@ def main(headles=True):
         
 
 
-main(headles=True)
+main(headles=False)

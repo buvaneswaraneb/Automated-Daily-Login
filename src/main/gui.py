@@ -15,7 +15,7 @@ default_color = ("#E9BDFB","#33032F")
 default_color_hover = ("#846C8E","#462C34")
 textColor = ("black","white")
 bg_color =  ("white","#170312")
-customtkinter.set_appearance_mode("light")
+customtkinter.set_appearance_mode("dark")
 class Window(customtkinter.CTk):
     def __init__(self, fg_color = None, **kwargs):
         super().__init__(fg_color, **kwargs)
@@ -159,7 +159,7 @@ class Historyframe(customtkinter.CTkFrame):
 
         # history scroll frame -> shows the 
         d = DateDataBase()
-        li = d.getclaimedToday()
+        li = d.getClaimedHistory()
         self.placeholder = ScrollFrame(master=self,data=li)
         self.placeholder.emailPlaceHolder()
         self.placeholder.pack(side='top',expand=True,pady=10,fill='both')
@@ -169,10 +169,8 @@ class ScrollFrame(customtkinter.CTkScrollableFrame):
     def __init__(self, master, data,width = 200, height = 200, corner_radius = None, border_width = None, bg_color = "transparent", fg_color = bg_color, border_color = None, background_corner_colors = None, overwrite_preferred_drawing_method = None, **kwargs):
         super().__init__(master, width, height, corner_radius, border_width, bg_color, fg_color, border_color, background_corner_colors, overwrite_preferred_drawing_method, **kwargs)
         self.li =  data #["test","test","test"]
-    
     def emailPlaceHolder(self):
-        print(self.li)
-        for mail in self.li:
+        for mail,date in self.li:
 
             accountHolder = customtkinter.CTkFrame(master=self,
                                                    fg_color=default_color,
@@ -188,6 +186,8 @@ class ScrollFrame(customtkinter.CTkScrollableFrame):
                                                        height=30,
                                                        width=30,
                                                        corner_radius=10)
+            dateLablel  = customtkinter.CTkLabel(master=statusPlaceHolder,
+                                                  text=date,text_color=textColor)
             
             self.mailLablel = customtkinter.CTkLabel(master=emailPlaceHolder,
                                                      text=mail,
@@ -207,6 +207,7 @@ class ScrollFrame(customtkinter.CTkScrollableFrame):
             self.mailLablel.pack(pady = 10 , padx =10, side = 'top')
             accountHolder.pack(pady = 10 , padx =10, side = 'top',fill='x',expand=True)
             claimed.pack(pady = 10 , padx =10, side = 'top')
+            dateLablel.pack(side="top")
 
     def noClaimEmailPlaceHolder(self):
             
@@ -241,7 +242,6 @@ class AccountsPlaceHolder(customtkinter.CTkFrame):
     
     def accountList(self):
         li = getEmailList()
-        print(li)
         s = ScrollFrame(master=self ,data=li)
         s.noClaimEmailPlaceHolder()
         s.pack(side='top',expand=True,pady=10,fill='both')
@@ -249,4 +249,6 @@ class AccountsPlaceHolder(customtkinter.CTkFrame):
 
 if __name__ == "__main__":
     w = Window()
+    count = 0
+    w.mainloop()
     w.mainloop()

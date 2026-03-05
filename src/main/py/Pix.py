@@ -98,7 +98,7 @@ def main():
     print("Visted Today: ",visted)
     for i in range(0,getLength()):
         data = getEmailPair(i)
-        if (data["email"] not in visted): 
+        if (data["email"] in visted): 
             login(data["email"],data["password"],i)
     end = time.time()
     print(f"Time taken: {end - start:.4f} seconds")
