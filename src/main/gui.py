@@ -232,6 +232,12 @@ class AddAccountFrame(customtkinter.CTkFrame):
     def title(self):
         title = customtkinter.CTkLabel(master=self,text="Add Account",text_color=textColor)
         title.pack(side="top",pady=10)
+
+    def AddAcc(self):
+        email =  self.email_input_variable.get()
+        print(email)
+        
+
     
     def form(self): #formPlaceHolder for input (email,password)
         formPlaceHolder = customtkinter.CTkFrame(master=self,fg_color=bg_color)
@@ -241,15 +247,52 @@ class AddAccountFrame(customtkinter.CTkFrame):
                                           text="Enter email",
                                           text_color=textColor,
                                            justify="left",anchor='w')
+        
         enterTxt.pack(side="top",expand=True,fill = "x",anchor="ne",pady=1,padx=30)
+        self.email_input_variable = customtkinter.StringVar()
         #input box 
-        input_box = customtkinter.CTkTextbox(master=formPlaceHolder,height=30,corner_radius=10,fg_color=default_color)
-        input_box.pack(side="top",expand=True,fill='x',pady=2,padx=30)
+        self.email_input_box = customtkinter.CTkEntry(master=formPlaceHolder,
+                                                      height=40,
+                                                      corner_radius=10,
+                                                      fg_color=default_color,
+                                                      placeholder_text="email",
+                                                      border_width=0,
+                                                      textvariable=self.email_input_variable)
+
+        self.email_input_box.pack(side="top",expand=True,fill='x',pady=2,padx=30)
         #password input box 
-        enterTxt = customtkinter.CTkLabel(master=formPlaceHolder,text="password",)
+        enterTxt = customtkinter.CTkLabel(master=formPlaceHolder,
+                                          text="Password",
+                                          justify="left",
+                                          anchor='w')
+        
         enterTxt.pack(side="top",expand=True,fill = "x",anchor="ne",pady=1,padx=30)
-        input_box = customtkinter.CTkTextbox(master=formPlaceHolder,height=30,corner_radius=10,fg_color=default_color)
-        input_box.pack(side="top",expand=True,fill='x',pady=2,padx=30)
+
+        self.pass_input_variable = customtkinter.StringVar()
+
+        self.pass_input_box = customtkinter.CTkEntry(master=formPlaceHolder,
+                                                     height=40,
+                                                     corner_radius=10,
+                                                     fg_color=default_color,
+                                                     placeholder_text="password",
+                                                     textvariable=self.pass_input_variable,
+                                                     border_width=0
+                                                     )
+        
+        self.pass_input_box.pack(side="top",expand=True,fill='x',pady=2,padx=30)
+
+        button = customtkinter.CTkButton(text="Submit",
+                                         master=formPlaceHolder,
+                                         height=40,
+                                         fg_color=default_color,
+                                         hover_color=default_color_hover,
+                                         corner_radius=10,
+                                         text_color=textColor,
+                                         command=self.AddAcc)
+        
+        button.pack(side ="top",pady=20)
+
+        
 
 
         
