@@ -11,11 +11,11 @@ BASE_DIR = os.path.dirname(__file__)
 img_path_on = os.path.join(BASE_DIR,"asserts","images","on.png")
 on_img  = customtkinter.CTkImage(light_image=Image.open(img_path_on),dark_image=Image.open(img_path_on),size=(40,40))
 
-default_color = ("#E9BDFB","#33032F")
-default_color_hover = ("#846C8E","#462C34")
+default_color = ("#E0FCCB","#33032F")
+default_color_hover = ("#DAEDD1","#462C34")
 textColor = ("black","white")
 bg_color =  ("white","#170312")
-customtkinter.set_appearance_mode("dark")
+customtkinter.set_appearance_mode("light")
 class Window(customtkinter.CTk):
     def __init__(self, fg_color = None, **kwargs):
         super().__init__(fg_color, **kwargs)
@@ -40,10 +40,12 @@ class content(customtkinter.CTkFrame):
         self.af = Historyframe(self)
         self.laf = AccountsPlaceHolder(self) #laf - list account Frame
         self.previousFrame = self.home
+        self.addAccount = AddAccountFrame(self) # add acount
+
 
 
     def show_frame(self, frame_to_show):
-        frames = [self.laf, self.af, self.home]
+        frames = [self.laf, self.af, self.home, self.addAccount]
 
         if self.previousFrame == frame_to_show:
             frame_to_show.pack_forget()
@@ -78,11 +80,12 @@ class SideMenuPlaceHolder(customtkinter.CTkFrame):
         self.menu()
 
 
-         # SideMenuPlaceHolder → SideMenu → content
     def menu(self):
         button = customtkinter.CTkButton(master=self,text="Accounts",text_color=textColor,fg_color=bg_color,hover_color=default_color_hover,command=lambda:self.master.master.show_frame(self.master.master.laf))
         button.pack(side='top',pady=5)
         button = customtkinter.CTkButton(master=self,text="History",text_color=textColor,fg_color=bg_color,hover_color=default_color_hover,command=lambda:self.master.master.show_frame(self.master.master.af))
+        button.pack(side='top',pady=5)
+        button = customtkinter.CTkButton(master=self, text="Add Account",text_color=textColor,fg_color=bg_color,hover_color=default_color,command=lambda:self.master.master.show_frame(self.master.master.addAccount)) 
         button.pack(side='top',pady=5)
         
 
@@ -159,7 +162,7 @@ class Historyframe(customtkinter.CTkFrame):
 
         # history scroll frame -> shows the 
         d = DateDataBase()
-        li = d.getClaimedHistory()
+        li = d.getclaimedToday()
         self.placeholder = ScrollFrame(master=self,data=li)
         self.placeholder.emailPlaceHolder()
         self.placeholder.pack(side='top',expand=True,pady=10,fill='both')
@@ -172,31 +175,14 @@ class ScrollFrame(customtkinter.CTkScrollableFrame):
     def emailPlaceHolder(self):
         for mail,date in self.li:
 
-            accountHolder = customtkinter.CTkFrame(master=self,
-                                                   fg_color=default_color,
-                                                   corner_radius=10)
+            accountHolder = customtkinter.CTkFrame(master=self,fg_color=default_color,corner_radius=10)
             
-            emailPlaceHolder = customtkinter.CTkFrame(master=accountHolder,
-                                                      fg_color=default_color,
-                                                      height=30,
-                                                      corner_radius=10)
+            emailPlaceHolder = customtkinter.CTkFrame(master=accountHolder, fg_color=default_color, height=30,corner_radius=10)
             
-            statusPlaceHolder = customtkinter.CTkFrame(master=accountHolder,
-                                                       fg_color=default_color,
-                                                       height=30,
-                                                       width=30,
-                                                       corner_radius=10)
-            dateLablel  = customtkinter.CTkLabel(master=statusPlaceHolder,
-                                                  text=date,text_color=textColor)
+            statusPlaceHolder = customtkinter.CTkFrame(master=accountHolder,fg_color=default_color,height=30,width=30,corner_radius=10)
+            dateLablel  = customtkinter.CTkLabel(master=statusPlaceHolder,text=date,text_color=textColor)
             
-            self.mailLablel = customtkinter.CTkLabel(master=emailPlaceHolder,
-                                                     text=mail,
-                                                     text_color=textColor,
-                                                     corner_radius=10,
-                                                     fg_color=default_color,
-                                                     height=30, 
-                                                     justify="left",
-                                                     anchor='w')
+            self.mailLablel = customtkinter.CTkLabel(master=emailPlaceHolder,text=mail,text_color=textColor,corner_radius=10,fg_color=default_color,height=30, justify="left",anchor='w')
             
             claimed = customtkinter.CTkLabel(master=statusPlaceHolder,
                                              text="Claimed",
@@ -212,18 +198,9 @@ class ScrollFrame(customtkinter.CTkScrollableFrame):
     def noClaimEmailPlaceHolder(self):
             
             for mail in self.li:
-                accountHolder = customtkinter.CTkFrame(master=self,
-                                                       fg_color=default_color,
-                                                       height=40)
+                accountHolder = customtkinter.CTkFrame(master=self,fg_color=default_color, height=40)
                 
-                self.mailLablel = customtkinter.CTkLabel(master=accountHolder,
-                                                        text=mail,
-                                                        text_color=textColor,
-                                                        corner_radius=5,
-                                                        fg_color=default_color,
-                                                        height=40,
-                                                        justify="left",
-                                                        anchor='w')
+                self.mailLablel = customtkinter.CTkLabel(master=accountHolder,text=mail,text_color=textColor,corner_radius=5,fg_color=default_color,height=40,justify="left",anchor='w')
                 
                 self.mailLablel.pack(pady = 10, padx =10, side = 'top')
                 accountHolder.pack(pady = 10 , padx =10, side = 'top',fill='x',expand=True)
@@ -235,7 +212,6 @@ class AccountsPlaceHolder(customtkinter.CTkFrame):
         self.title()
         self.accountList()
 
-
     def title(self):
         accTittle = customtkinter.CTkLabel(master=self,text="Accounts",text_color=textColor)
         accTittle.pack(side='top',pady=10)
@@ -245,6 +221,46 @@ class AccountsPlaceHolder(customtkinter.CTkFrame):
         s = ScrollFrame(master=self ,data=li)
         s.noClaimEmailPlaceHolder()
         s.pack(side='top',expand=True,pady=10,fill='both')
+
+
+class AddAccountFrame(customtkinter.CTkFrame):
+    def __init__(self, master, width = 200, height = 200, corner_radius = None, border_width = None, bg_color = "transparent", fg_color = bg_color, border_color = None, background_corner_colors = None, overwrite_preferred_drawing_method = None, **kwargs):
+        super().__init__(master, width, height, corner_radius, border_width, bg_color, fg_color, border_color, background_corner_colors, overwrite_preferred_drawing_method, **kwargs)
+        self.title()
+        self.form()
+    
+    def title(self):
+        title = customtkinter.CTkLabel(master=self,text="Add Account",text_color=textColor)
+        title.pack(side="top",pady=10)
+    
+    def form(self): #formPlaceHolder for input (email,password)
+        formPlaceHolder = customtkinter.CTkFrame(master=self,fg_color=bg_color)
+        formPlaceHolder.pack(side="top",fill="both",expand=False)
+        # input text Enter Email
+        enterTxt = customtkinter.CTkLabel(master=formPlaceHolder,
+                                          text="Enter email",
+                                          text_color=textColor,
+                                           justify="left",anchor='w')
+        enterTxt.pack(side="top",expand=True,fill = "x",anchor="ne",pady=1,padx=30)
+        #input box 
+        input_box = customtkinter.CTkTextbox(master=formPlaceHolder,height=30,corner_radius=10,fg_color=default_color)
+        input_box.pack(side="top",expand=True,fill='x',pady=2,padx=30)
+        #password input box 
+        enterTxt = customtkinter.CTkLabel(master=formPlaceHolder,text="password",)
+        enterTxt.pack(side="top",expand=True,fill = "x",anchor="ne",pady=1,padx=30)
+        input_box = customtkinter.CTkTextbox(master=formPlaceHolder,height=30,corner_radius=10,fg_color=default_color)
+        input_box.pack(side="top",expand=True,fill='x',pady=2,padx=30)
+
+
+        
+
+
+        
+
+    
+    def email(self):
+        pass
+        
 
 
 if __name__ == "__main__":

@@ -148,13 +148,13 @@ class DateDataBase(AccountDateBase):
     def getclaimedToday(self):
         conn = sqlite3.connect(self.db)
         curr = conn.cursor()
-        query = """SELECT email FROM Claim WHERE day = date('now')"""
+        query = """SELECT email, day FROM Claim WHERE day = date('now')"""
         curr.execute(query)
         conn.commit()
         val = curr.fetchall()
         li = []
         for i in val:
-            li.append(i[0])
+            li.append(i)
         conn.close()
         return li
     
@@ -176,14 +176,12 @@ class DateDataBase(AccountDateBase):
         curr.execute(query)
         conn.commit()
         li = curr.fetchall()
-        return li.sort()
+        return li
     
 
 if __name__ == "__main__":
     print(BASE_DIR) 
-    a = AccountDateBase()
-    print(type(a.getAccount()))
-    print(a.getAccount())
+    print(DateDataBase().getclaimedToday())
 
     
 
