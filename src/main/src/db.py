@@ -7,11 +7,13 @@ import os
 BASE_DIR = os.path.dirname(__file__)
 account_path = os.path.join(BASE_DIR,"DataBase","Accounts.db")
 date_path = os.path.join(BASE_DIR,"DataBase","date.db")
+print(account_path)
 
 class AccountDateBase:
     def __init__(self):
         self.db = account_path
         self.table = "Accounts"
+        print(account_path)
 
     #to Execute Single Value with single value
     def Execute(self,query:str):
@@ -21,7 +23,8 @@ class AccountDateBase:
         connect.commit()
         connect.close()
         print(f"Query Executed : {query}")
-    
+
+    #Execute query 
     def ExecuteM(self,query:str,tup):
         connect = sqlite3.connect(self.db)
         cur = connect.cursor()
@@ -104,6 +107,12 @@ class AccountDateBase:
                 previous = password     
             account_array.append((email,password))
         return account_array
+    
+
+    def clean(self):
+        query = """DELETE FROM Accounts"""
+        self.Execute(query=query)
+        pass
 
     def validEmail(email):
         pass
@@ -181,7 +190,9 @@ class DateDataBase(AccountDateBase):
 
 if __name__ == "__main__":
     print(BASE_DIR) 
-    print(DateDataBase().getclaimedToday())
+    a = AccountDateBase()
+    a.getAccount()
+
 
     
 

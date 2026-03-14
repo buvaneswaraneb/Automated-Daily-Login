@@ -1,10 +1,10 @@
 import customtkinter
 import tkinter
 from PIL import Image
-from py.db import DateDataBase
+from src.db import DateDataBase,AccountDateBase
 import os
-import py.Pix as pix
-from py.Accounts import getEmailList
+import src.Pix as pix
+from src.Accounts import getEmailList
 import multiprocessing
 
 BASE_DIR = os.path.dirname(__file__)
@@ -58,6 +58,7 @@ class content(customtkinter.CTkFrame):
 
         frame_to_show.pack(fill="both", expand=True)  
         self.previousFrame = frame_to_show
+
     
 
 
@@ -182,7 +183,13 @@ class ScrollFrame(customtkinter.CTkScrollableFrame):
             statusPlaceHolder = customtkinter.CTkFrame(master=accountHolder,fg_color=default_color,height=30,width=30,corner_radius=10)
             dateLablel  = customtkinter.CTkLabel(master=statusPlaceHolder,text=date,text_color=textColor)
             
-            self.mailLablel = customtkinter.CTkLabel(master=emailPlaceHolder,text=mail,text_color=textColor,corner_radius=10,fg_color=default_color,height=30, justify="left",anchor='w')
+            self.mailLablel = customtkinter.CTkLabel(master=emailPlaceHolder,
+                                                     text=mail,text_color=textColor,
+                                                     corner_radius=10,
+                                                     fg_color=default_color,
+                                                     height=30,
+                                                     justify="left",
+                                                     anchor='w')
             
             claimed = customtkinter.CTkLabel(master=statusPlaceHolder,
                                              text="Claimed",
@@ -200,7 +207,16 @@ class ScrollFrame(customtkinter.CTkScrollableFrame):
             for mail in self.li:
                 accountHolder = customtkinter.CTkFrame(master=self,fg_color=default_color, height=40)
                 
-                self.mailLablel = customtkinter.CTkLabel(master=accountHolder,text=mail,text_color=textColor,corner_radius=5,fg_color=default_color,height=40,justify="left",anchor='w')
+                self.mailLablel = customtkinter.CTkLabel(
+                    master=accountHolder,
+                    text=mail,
+                    text_color=textColor,
+                    corner_radius=5,
+                    fg_color=default_color,
+                    height=40,
+                    justify="left",
+                    anchor='w'
+                    )
                 
                 self.mailLablel.pack(pady = 10, padx =10, side = 'top')
                 accountHolder.pack(pady = 10 , padx =10, side = 'top',fill='x',expand=True)
@@ -217,7 +233,8 @@ class AccountsPlaceHolder(customtkinter.CTkFrame):
         accTittle.pack(side='top',pady=10)
     
     def accountList(self):
-        li = getEmailList()
+        a = AccountDateBase()
+        li = a.getAccount()
         s = ScrollFrame(master=self ,data=li)
         s.noClaimEmailPlaceHolder()
         s.pack(side='top',expand=True,pady=10,fill='both')
@@ -233,9 +250,26 @@ class AddAccountFrame(customtkinter.CTkFrame):
         title = customtkinter.CTkLabel(master=self,text="Add Account",text_color=textColor)
         title.pack(side="top",pady=10)
 
+
+     # function to update CTKentry and email to the db
     def AddAcc(self):
+        
         email =  self.email_input_variable.get()
-        print(email)
+        self.email_input_box.delete(0,"end")
+        password = self.pass_input_variable.get()
+        self.pass_input_box.delete(0,"end")
+
+        if email == "" or password == "":
+            self.message_dialog.configure(
+                text="Enter Valid Email/Password",
+                text_color="red"
+            )
+            return
+        elif (not(email == "" or password == "")):
+             self.message_dialog.configure(text="",text_color="red")
+        
+        a  = AccountDateBase()
+        a.AddValue(email=email,password=password)
         
 
     
@@ -257,7 +291,8 @@ class AddAccountFrame(customtkinter.CTkFrame):
                                                       fg_color=default_color,
                                                       placeholder_text="email",
                                                       border_width=0,
-                                                      textvariable=self.email_input_variable)
+                                                      textvariable=self.email_input_variable,
+                                                      )
 
         self.email_input_box.pack(side="top",expand=True,fill='x',pady=2,padx=30)
         #password input box 
@@ -289,6 +324,12 @@ class AddAccountFrame(customtkinter.CTkFrame):
                                          corner_radius=10,
                                          text_color=textColor,
                                          command=self.AddAcc)
+        
+        #message box to alert / notify its an Lable
+        self.message_dialog = customtkinter.CTkLabel(master=formPlaceHolder,
+                                                     text="")
+        self.message_dialog.pack(side="bottom", fill="y", pady=1, expand=True)
+        
         
         button.pack(side ="top",pady=20)
 
