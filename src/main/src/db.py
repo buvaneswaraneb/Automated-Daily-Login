@@ -34,7 +34,7 @@ class AccountDateBase:
         print(f"Query Executed : {query}")
 
     #to Execute query with multiple values
-    def ExecuteMany(query:str,setValue,self):
+    def ExecuteMany(self,query:str,setValue):
         connect = sqlite3.connect(self.db)
         cur = connect.cursor()
         cur.executemany(query,setValue)
@@ -59,7 +59,7 @@ class AccountDateBase:
     #to add single value
     def AddValue(self,email,password):
         Query = f"""INSERT INTO {self.table} VALUES (?,?)"""
-        self.ExecuteMany(Query,(email,password))
+        self.ExecuteMany(Query,[(email,password)])
 
 
     #to add multiple value
@@ -192,6 +192,7 @@ if __name__ == "__main__":
     print(BASE_DIR) 
     a = AccountDateBase()
     a.getAccount()
+    a.clean()
 
 
     

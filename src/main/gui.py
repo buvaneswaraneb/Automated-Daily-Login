@@ -333,15 +333,6 @@ class AddAccountFrame(customtkinter.CTkFrame):
         
         button.pack(side ="top",pady=20)
 
-        
-
-
-        
-
-
-        
-
-    
     def email(self):
         pass
         
