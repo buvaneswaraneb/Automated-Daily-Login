@@ -73,8 +73,10 @@ class Pix:
                 return False# reward not found
             
             if self.sb.is_element_visible("#cf-turnstile"):
+                self.sb.wait_for_ready_state_complete()
                 self.sb.solve_captcha()
                 print("Cloudflare widget found!")
+                self.sb.wait(2)
 
             self.sb.click(self.reward_selector_ele)
             print("Reward Sucessfuly Claimed ✅")
