@@ -43,7 +43,6 @@ class content(customtkinter.CTkFrame):
         self.addAccount = AddAccountFrame(self) # add acount
 
 
-
     def show_frame(self, frame_to_show):
         frames = [self.laf, self.af, self.home, self.addAccount]
 

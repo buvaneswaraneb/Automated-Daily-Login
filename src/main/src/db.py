@@ -192,7 +192,7 @@ if __name__ == "__main__":
     print(BASE_DIR) 
     a = AccountDateBase()
     a.getAccount()
-    a.clean()
+    a.clean() 
 
 
     
