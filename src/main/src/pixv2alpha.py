@@ -76,6 +76,7 @@ class Pix:
                 self.sb.wait_for_ready_state_complete()
                 self.sb.solve_captcha()
                 print("Cloudflare widget found!")
+                self.sb.solve_captcha()
                 self.sb.wait(2)
 
             self.sb.click(self.reward_selector_ele)
