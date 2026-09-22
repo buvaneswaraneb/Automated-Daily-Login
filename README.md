@@ -4,29 +4,29 @@ Automated login script for the website PixAi
 
 ## PixAi Website 
 
-![Pixai website]("images/pixai.png")
+![Pixai website](images/pixai.png)
 
 
 ## PIX AUTO Start Page
 
-## Light 
+### Light 
 
-![]("images/start_light.png")
+![](images/start_light.png)
 
-## dark
+### Dark
 
-![]("images/start_dark.png")
+![](images/start_dark.png)
 
 
 ## PIX AUTO Register Page
 
-## Light
+### Light
 
-![]("images/register_light.png")
+![](images/register_light.png)
 
-## Dark
+### Dark
 
-![]("images/register_dark.png")
+![](images/register_dark.png)
 
 
-Devloped by Soul with ❤️
+Developed by Soul with ❤️
