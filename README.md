@@ -2,7 +2,31 @@
 
 Automated login script for the website PixAi
 
-Modules Needed
+## PixAi Website 
 
-```pip3 install seleniumbase```
+![Pixai website]("images/pixai.png")
 
+
+## PIX AUTO Start Page
+
+## Light 
+
+![]("images/start_light.png")
+
+## dark
+
+![]("images/start_dark.png")
+
+
+## PIX AUTO Register Page
+
+## Light
+
+![]("images/register_light.png")
+
+## Dark
+
+![]("images/register_dark.png")
+
+
+Devloped by Soul with ❤️
